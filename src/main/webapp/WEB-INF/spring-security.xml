@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd" xmlns:security="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+<security:http auto-config="true">
+<security:csrf disabled="true"/>
+<security:intercept-url access="hasRole('ROLE_ADMIN')" pattern="/admin/**"/>
+<security:intercept-url access="permitAll" pattern="/**"/>
+<security:form-login authentication-failure-url="/login" default-target-url="/home" login-processing-url="/j_spring_security_check" password-parameter="j_password" username-parameter="j_username" login-page="/login"/>
+<security:logout logout-url="/j_spring_security_logout" logout-success-url="/login"/>
+</security:http>
+<security:authentication-manager>
+<security:authentication-provider>
+<security:jdbc-user-service users-by-username-query="SELECT username,password,enabled FROM user where username=?" authorities-by-username-query="SELECT username,role FROM authorities where username=?" data-source-ref="dataSource"/>
+</security:authentication-provider>
+</security:authentication-manager>
+</beans>
